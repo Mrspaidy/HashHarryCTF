@@ -2,34 +2,28 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install SSH server
+# Install SSH + Python
 RUN apt update && \
-    apt install -y openssh-server && \
+    apt install -y openssh-server python3 && \
     mkdir /var/run/sshd
 
-# Create CTF user with password
-RUN useradd -m -s /bin/bash spaidyslabsx1 && \
-    echo "spaidyslabsx1:spaidyslabsx1" | chpasswd
+# Create user with python as default shell
+RUN useradd -m -s /usr/bin/python3 ctfuser && \
+    echo "ctfuser:ctfpass123" | chpasswd
 
-# Set working directory
 WORKDIR /home/ctfuser
 
-# Copy your existing python file
 COPY server.py .
 
-# Permissions
-RUN chown -R spaidyslabsx1:spaidyslabsx1 /home/spaidyslabsx1
+RUN chown -R ctfuser:ctfuser /home/ctfuser
 
-# Allow password authentication
+# Enable password login
 RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
-
-# 🔥 Force Python challenge after login (NO SHELL ESCAPE)
-RUN echo "python3 /home/ctfuser/server.py" >> /home/ctfuser/.bashrc
-
 
 EXPOSE 22
 
 CMD ["/usr/sbin/sshd", "-D"]
+
 
 
 
