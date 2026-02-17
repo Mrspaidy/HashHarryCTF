@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -29,3 +29,4 @@ RUN echo "ForceCommand python3 /home/spaidyslabsx1/server.py" >> /etc/ssh/sshd_c
 EXPOSE 22
 
 CMD ["/usr/sbin/sshd", "-D"]
+
