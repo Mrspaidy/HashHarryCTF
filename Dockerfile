@@ -1,19 +1,31 @@
 FROM python:3.10-slim
 
-# Create CTF user
-RUN useradd -m ctfuser
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install SSH server
+RUN apt update && \
+    apt install -y openssh-server && \
+    mkdir /var/run/sshd
+
+# Create CTF user with password
+RUN useradd -m -s /bin/bash ctfuser && \
+    echo "spaidyslabsx1:spaidyslabsx1" | chpasswd
 
 # Set working directory
 WORKDIR /home/ctfuser
 
-# Copy server file
+# Copy your existing python file
 COPY server.py .
 
-# Give permission
-RUN chmod +x server.py
-RUN chown -R ctfuser:ctfuser /home/ctfuser
+# Permissions
+RUN chown -R spaidyslabsx1:spaidyslabsx1 /home/spaidyslabsx1
 
-USER ctfuser
+# Allow password authentication
+RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
 
-# Run python automatically when container starts
-ENTRYPOINT ["python3", "server.py"]
+# 🔥 Force Python challenge after login (NO SHELL ESCAPE)
+RUN echo "ForceCommand python3 /home/spaidyslabsx1/server.py" >> /etc/ssh/sshd_config
+
+EXPOSE 22
+
+CMD ["/usr/sbin/sshd", "-D"]
