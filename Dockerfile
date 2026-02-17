@@ -24,10 +24,12 @@ RUN chown -R spaidyslabsx1:spaidyslabsx1 /home/spaidyslabsx1
 RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
 
 # 🔥 Force Python challenge after login (NO SHELL ESCAPE)
-RUN echo "ForceCommand python3 /home/spaidyslabsx1/server.py" >> /etc/ssh/sshd_config
+RUN echo "python3 /home/ctfuser/server.py" >> /home/ctfuser/.bashrc
+
 
 EXPOSE 22
 
 CMD ["/usr/sbin/sshd", "-D"]
+
 
 
