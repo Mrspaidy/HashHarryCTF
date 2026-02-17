@@ -8,7 +8,7 @@ RUN apt update && \
     mkdir /var/run/sshd
 
 # Create CTF user with password
-RUN useradd -m -s /bin/bash ctfuser && \
+RUN useradd -m -s /bin/bash spaidyslabsx1 && \
     echo "spaidyslabsx1:spaidyslabsx1" | chpasswd
 
 # Set working directory
@@ -29,4 +29,5 @@ RUN echo "ForceCommand python3 /home/spaidyslabsx1/server.py" >> /etc/ssh/sshd_c
 EXPOSE 22
 
 CMD ["/usr/sbin/sshd", "-D"]
+
 
