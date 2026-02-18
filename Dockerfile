@@ -17,7 +17,7 @@ COPY server.py .
 RUN chown -R ctfuser:ctfuser /home/ctfuser
 
 # Auto run python script on login
-RUN echo "python3 /home/ctfuser/server.py" >> /home/ctfuser/.bashrc
+RUN echo "python3 /home/ctfuser/server.py; exit" >> /home/ctfuser/.bashrc
 
 # Enable password login
 RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
